@@ -4,12 +4,14 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-
 /**
  * Created by yaski on 03.07.2017.
  */
-open class Rain {
-    @SerializedName("3h")
+class w_Wind {
+    @SerializedName("speed")
     @Expose
-    var _3h: Int? = null
+    var speed: Double? = null
+    @SerializedName("deg")
+    @Expose
+    var deg: Int? = null
 }

@@ -4,11 +4,10 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-
 /**
  * Created by yaski on 03.07.2017.
  */
-open class Basic_temperature {
+open class w_Basic_temperature {
     @SerializedName("temp")
     @Expose
     var temp: Double? = null

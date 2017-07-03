@@ -4,11 +4,10 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-
 /**
  * Created by yaski on 03.07.2017.
  */
-open class System {
+open class w_System {
     @SerializedName("type")
     @Expose
     var type: Int? = null

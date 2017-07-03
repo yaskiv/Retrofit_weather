@@ -1,7 +1,8 @@
-package com.yaskiv.retrofit_weather
+package com.yaskiv.retrofit_weather.View
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.yaskiv.retrofit_weather.R
 
 class MainActivity : AppCompatActivity() {
 

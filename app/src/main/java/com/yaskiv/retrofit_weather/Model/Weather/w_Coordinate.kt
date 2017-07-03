@@ -4,15 +4,14 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-
 /**
  * Created by yaski on 03.07.2017.
  */
-open class Coordinate {
-    @com.google.gson.annotations.SerializedName("lon")
-    @com.google.gson.annotations.Expose
+open class w_Coordinate {
+    @SerializedName("lon")
+    @Expose
     var lon: Double? = null
-    @com.google.gson.annotations.SerializedName("lat")
-    @com.google.gson.annotations.Expose
+    @SerializedName("lat")
+    @Expose
     var lat: Double? = null
 }

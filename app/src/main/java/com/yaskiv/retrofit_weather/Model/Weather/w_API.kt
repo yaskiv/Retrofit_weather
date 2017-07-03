@@ -6,35 +6,35 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by yaski on 03.07.2017.
  */
-open class API() {
+open class w_API() {
 
     @SerializedName("coord")
     @Expose
-    var coord: Coordinate? = null
+    var coord: w_Coordinate? = null
     @SerializedName("weather")
     @Expose
-    var weather: List<Weather>? = null
+    var weather: List<w_Weather>? = null
     @SerializedName("base")
     @Expose
     var base: String? = null
     @SerializedName("main")
     @Expose
-    var main: Main? = null
+    var main: w_Basic_temperature? = null
     @SerializedName("wind")
     @Expose
-    var wind: Wind? = null
+    var wind: w_Wind? = null
     @SerializedName("clouds")
     @Expose
-    var clouds: Clouds? = null
+    var clouds: w_Clouds? = null
     @SerializedName("rain")
     @Expose
-    var rain: Rain? = null
+    var rain: w_Rain? = null
     @SerializedName("dt")
     @Expose
     var dt: Int? = null
     @SerializedName("sys")
     @Expose
-    var sys: Sys? = null
+    var sys: w_System? = null
     @SerializedName("id")
     @Expose
     var id: Int? = null
