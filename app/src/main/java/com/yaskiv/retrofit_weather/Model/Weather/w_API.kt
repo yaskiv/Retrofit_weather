@@ -3,9 +3,11 @@ package com.yaskiv.retrofit_weather.Model.Weather
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+
 /**
  * Created by yaski on 03.07.2017.
  */
+
 open class w_API() {
 
     @SerializedName("coord")
@@ -35,6 +37,7 @@ open class w_API() {
     @SerializedName("sys")
     @Expose
     var sys: w_System? = null
+
     @SerializedName("id")
     @Expose
     var id: Int? = null
