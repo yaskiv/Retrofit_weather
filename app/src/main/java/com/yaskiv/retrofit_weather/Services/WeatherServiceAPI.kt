@@ -14,4 +14,8 @@ interface WeatherServiceAPI {
     @GET("data/2.5/weather?")
     fun getWeather(@Query("q") cityName: String, @Query("appid") api_key: String): Observable<w_API>
 
+    //api.openweathermap.org/data/2.5/weather?lat=35&lon=139
+    @GET("data/2.5/weather?")
+    fun getWeatherByLocation(@Query("lat") lat: String, @Query("lon") lon: String, @Query("appid") api_key: String): Observable<w_API>
+
 }

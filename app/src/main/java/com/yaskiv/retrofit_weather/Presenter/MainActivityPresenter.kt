@@ -54,4 +54,41 @@ class MainActivityPresenter(var mActivity: IMainActivity) {
                         }
                 )
     }
+
+    fun getWeatherByLocation(lat: String, lon: String, api_key: String): Unit {
+        val gson = GsonBuilder().setExclusionStrategies(object : ExclusionStrategy {
+            override fun shouldSkipField(f: FieldAttributes): Boolean {
+                return false
+            }
+
+            override fun shouldSkipClass(clazz: Class<*>): Boolean {
+                return false
+            }
+        }).create()
+
+        val retrofit: Retrofit = Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .baseUrl("http://api.openweathermap.org/")
+                .build()
+
+        val weatherServiceAPI: WeatherServiceAPI = retrofit.create(
+                WeatherServiceAPI::class.java)
+
+        weatherServiceAPI.getWeatherByLocation(lat, lon, api_key)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { weather ->
+                            mActivity.UpdateCityName(weather.name!!)
+                            mActivity.UpdateCityTemperature((weather.main!!.temp!! - 273.15).toString())
+                            Log.d("City : ", weather.name)
+                            Log.d("Weather : ", (weather.main!!.temp!! - 273.15).toString())
+
+                        },
+                        { error ->
+                            Log.e("Error", error.message)
+                        }
+                )
+    }
 }
