@@ -10,5 +10,5 @@ import com.google.gson.annotations.SerializedName
 open class w_Rain {
     @SerializedName("3h")
     @Expose
-    var _3h: Int? = null
+    var _3h: Double? = null
 }

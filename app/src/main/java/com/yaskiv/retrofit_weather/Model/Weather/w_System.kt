@@ -26,4 +26,7 @@ open class w_System {
     @SerializedName("sunset")
     @Expose
     var sunset: Int? = null
+    @SerializedName("pod")
+    @Expose
+    var pod: String? = null
 }

@@ -1,14 +1,15 @@
-package com.yaskiv.retrofit_weather.Model.Weather
+package com.yaskiv.retrofit_weather.Model.Weather.WeatherOf1day
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.yaskiv.retrofit_weather.Model.Weather.*
 
 
 /**
  * Created by yaski on 03.07.2017.
  */
 
-open class w_API() {
+open class w1_API() {
 
     @SerializedName("coord")
     @Expose
@@ -21,7 +22,7 @@ open class w_API() {
     var base: String? = null
     @SerializedName("main")
     @Expose
-    var main: w_Basic_temperature? = null
+    var main: w1_BasicData? = null
     @SerializedName("wind")
     @Expose
     var wind: w_Wind? = null

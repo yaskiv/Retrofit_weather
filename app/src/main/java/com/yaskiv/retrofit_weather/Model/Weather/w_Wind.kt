@@ -13,5 +13,5 @@ class w_Wind {
     var speed: Double? = null
     @SerializedName("deg")
     @Expose
-    var deg: Int? = null
+    var deg: Double? = null
 }
