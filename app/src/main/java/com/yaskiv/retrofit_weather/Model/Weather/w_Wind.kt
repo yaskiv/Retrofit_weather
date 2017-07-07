@@ -2,12 +2,15 @@ package com.yaskiv.retrofit_weather.Model.Weather
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmObject
+import io.realm.annotations.RealmClass
 
 
 /**
  * Created by yaski on 03.07.2017.
  */
-class w_Wind {
+@RealmClass
+open class w_Wind : RealmObject() {
     @SerializedName("speed")
     @Expose
     var speed: Double? = null

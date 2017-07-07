@@ -1,10 +1,16 @@
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
+
+    packagingOptions
+            {
+                exclude 'META-INF/rxjava.properties'
+            }
     defaultConfig {
         applicationId "com.yaskiv.retrofit_weather"
         minSdkVersion 16
@@ -36,5 +42,6 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'com.ninenine.reactivelocation:reactive-location:0.0.2'
+    compile 'com.github.vicpinm:krealmextensions:1.0.9'
 
 }

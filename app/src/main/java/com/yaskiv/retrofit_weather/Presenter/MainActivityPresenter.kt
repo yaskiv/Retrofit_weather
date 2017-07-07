@@ -14,12 +14,15 @@ import com.ninenine.reactivelocation.FusedLocationApiProvider
 import com.ninenine.reactivelocation.LocationConnectionException
 import com.ninenine.reactivelocation.LocationManager
 import com.yaskiv.retrofit_weather.Model.Weather.WeatherOf5days.w5_BasicData
+import com.yaskiv.retrofit_weather.Model.Weather.w_Wind
 import com.yaskiv.retrofit_weather.Services.WeatherServiceAPI
 import com.yaskiv.retrofit_weather.View.IMainActivity
+import io.realm.Realm
 import retrofit.*
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import kotlin.properties.Delegates
 
 /**
  * Created by yaski on 03.07.2017.
@@ -79,7 +82,7 @@ class MainActivityPresenter(var mActivity: IMainActivity) {
                     if (type == 1)
                         getWeatherByLocation(location.latitude.toString(), location.longitude.toString(), API_KEY)
                     if (type == 2)
-                        getWeatherByLocationOf5days(location.latitude.toString(), location.longitude.toString(), API_KEY)
+                        getWeatherByLocationOf5days(location.latitude.toString(), location.longitude.toString(), API_KEY, context)
                 },
                 { error ->
                     // Check if the error has solution. Settings or Permission exceptions
@@ -112,11 +115,12 @@ class MainActivityPresenter(var mActivity: IMainActivity) {
                 WeatherServiceAPI::class.java)
     }
 
-    fun getWeatherByLocationOf5days(lat: String, lon: String, api_key: String): Unit {
+
+    fun getWeatherByLocationOf5days(lat: String, lon: String, api_key: String, context: Context): Unit {
 
         if (weatherServiceAPI == null)
             InitAPI()
-
+        var lt = mutableListOf<w_Wind>()
         weatherServiceAPI!!.getWeatherOf5DaysByLocation(lat, lon, api_key)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -124,7 +128,16 @@ class MainActivityPresenter(var mActivity: IMainActivity) {
                         { weather ->
                             mActivity.UpdateCityName(weather.city!!.name!!)
                             for (ob: w5_BasicData in weather.list!!) {
+                                lt.add(ob.wind!!)
                                 Log.d("Weather", (ob.main!!.temp!! - 273.15).toString())
+                            }
+                            Realm.init(context)
+                            val realm = Realm.getDefaultInstance()
+                            try {
+                                realm.executeTransaction({ realm -> realm.copyToRealmOrUpdate(lt) })
+                                Log.d("Ok", "Ok")
+                            } finally {
+                                realm.close()
                             }
 
                         },

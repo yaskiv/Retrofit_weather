@@ -11,4 +11,5 @@ interface IMainActivity {
     fun UpdateCityTemperature(city_temperature_from_Api: String)
     fun Click1(view: View)
     fun Click2(view: View)
+    fun Click3(view: View)
 }
