@@ -13,8 +13,11 @@ import com.google.gson.GsonBuilder
 import com.ninenine.reactivelocation.FusedLocationApiProvider
 import com.ninenine.reactivelocation.LocationConnectionException
 import com.ninenine.reactivelocation.LocationManager
+import com.yaskiv.retrofit_weather.Model.City.c_API
+import com.yaskiv.retrofit_weather.Model.City.c_City
 import com.yaskiv.retrofit_weather.Model.Weather.WeatherOf5days.w5_BasicData
 import com.yaskiv.retrofit_weather.Model.Weather.w_Wind
+import com.yaskiv.retrofit_weather.Services.CityServiceParse
 import com.yaskiv.retrofit_weather.Services.WeatherServiceAPI
 import com.yaskiv.retrofit_weather.View.IMainActivity
 import io.realm.Realm
@@ -22,7 +25,6 @@ import retrofit.*
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import kotlin.properties.Delegates
 
 /**
  * Created by yaski on 03.07.2017.
@@ -30,6 +32,8 @@ import kotlin.properties.Delegates
 class MainActivityPresenter(var mActivity: IMainActivity) {
     var subscription: Subscription? = null
     var weatherServiceAPI: WeatherServiceAPI? = null
+    var cityServiceParse: CityServiceParse? = null
+    var c_api : c_API? = null
     fun getWeather(city_name: String, api_key: String): Unit {
         if (weatherServiceAPI == null)
             InitAPI()
@@ -166,5 +170,57 @@ class MainActivityPresenter(var mActivity: IMainActivity) {
                             Log.e("Error", error.message)
                         }
                 )
+    }
+
+    fun getCity() : Unit
+    {
+        c_api = c_API()
+        val gson = GsonBuilder().setExclusionStrategies(object : ExclusionStrategy {
+            override fun shouldSkipField(f: FieldAttributes): Boolean {
+                return false
+            }
+
+            override fun shouldSkipClass(clazz: Class<*>): Boolean {
+                return false
+            }
+        }).create()
+
+        val retrofit: Retrofit = Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .baseUrl("http://raw.githubusercontent.com/")
+                .build()
+
+        cityServiceParse = retrofit.create(
+                CityServiceParse::class.java)
+
+        cityServiceParse?.getCity()!!.enqueue(object : Callback<List<c_City>>{
+            override fun onFailure(t: Throwable?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onResponse(response: Response<List<c_City>>?, retrofit: Retrofit?) {
+                c_api!!.citys.addAll(response!!.body())
+                Log.d("City",c_api!!.citys.size.toString())
+            }
+        })
+    }
+
+    fun get_list(context: Context) : Unit
+    {
+        /*var city_name = mutableListOf<String>()
+        for (ob in c_api!!.citys) {
+            city_name.add(ob.name!!)
+            Log.d("City", ob.name.toString())
+        }*/
+        Realm.init(context)
+        val realm = Realm.getDefaultInstance()
+        try {
+            realm.executeTransaction({ realm -> realm.copyToRealmOrUpdate(c_api!!.citys) })
+            Log.d("Ok", "Ok")
+        } finally {
+            realm.close()
+        }
+
     }
 }

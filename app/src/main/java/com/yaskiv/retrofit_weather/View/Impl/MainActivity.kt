@@ -1,12 +1,13 @@
 package com.yaskiv.retrofit_weather.View.Impl
 
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import com.yaskiv.retrofit_weather.Model.City.c_City
 import com.yaskiv.retrofit_weather.Model.Weather.w_Wind
 import com.yaskiv.retrofit_weather.Presenter.MainActivityPresenter
 import com.yaskiv.retrofit_weather.R
@@ -16,6 +17,7 @@ import io.realm.Realm
 
 
 class MainActivity : AppCompatActivity(), IMainActivity {
+
     var editText: EditText? = null
     var city_name: TextView? = null
 
@@ -79,5 +81,24 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         city_temperature!!.text = city_temperature_from_Api
     }
 
+    override fun Click_City(view: View) {
+        mPresenter.getCity()
+    }
 
+    override fun Click_Realm(view: View) {
+        mPresenter.get_list(this)
+    }
+
+    override fun Click_Get_City(view: View) {
+        Realm.init(this)
+        val realm = Realm.getDefaultInstance()
+        try {
+            var events: List<c_City> = realm.where(c_City::class.java).findAll()
+            for (kl in events) {
+                Log.d("Realm", kl.name.toString())
+            }
+        } finally {
+            realm.close()
+        }
+    }
 }
